@@ -3,13 +3,13 @@ import {createSlice,configureStore} from '@reduxjs/toolkit'
 
 const bookSlice=createSlice({
     name:"books",
-    initialState:[],
+    initialState:{books:[]},
     reducers:{
         add_data(state,action){
             
-            state=[...action.payload]
+            state.books=action.payload
             
-            console.log(state)
+            
         },
         get_book(state,action){
             return state
