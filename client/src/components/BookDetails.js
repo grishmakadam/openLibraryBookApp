@@ -8,6 +8,8 @@ import {
   Container,
   Grid,
   IconButton,
+  Stack,
+  Chip,
   Typography,
 } from "@mui/material";
 import { InputLabel } from "@mui/material";
@@ -18,16 +20,25 @@ import image from "../image.jpg";
 import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
 
 const BookDetails = () => {
-  const [data, setData] = useState({});
+  const [data, setData] = useState({ ratings_average: 0,subjects:[] });
   const { id } = useParams();
-  const books = useSelector((state) => state.books);
+  const books = useSelector(state=>state.book.books);
 
   const getData = async () => {
     try {
       const res = await axios.get(`https://openlibrary.org/works/${id}.json`);
       const book = books.filter((x) => x.id.slice(7, x.id.length) == id);
-    
-      setData({ ...book[0],description:res.data.description});
+      const desc = !res.data.description
+        ? ""
+        : res.data.description.value
+        ? res.data.description.value
+        : res.data.description;
+const subjects=res.data.subjects?res.data.subjects:[]
+      setData({
+        ...book[0],
+        description: desc,
+        subjects: [...subjects],
+      });
       return res.data;
     } catch (e) {
       console.log(e);
@@ -111,28 +122,42 @@ const BookDetails = () => {
           </FormControl>
         </Grid>
       </Grid>
-      <Grid item md={8} display="flex" flexDirection="column">
-        <Typography variant="h3">{data.title}</Typography>
-        <Typography variant="h5">{data.author}</Typography>
+      <Grid
+        item
+        container
+        md={8}
+        display="flex"
+        flexDirection="column"
+        spacing={2}
+      >
+        <Grid item>
+          <Typography variant="h3">{data.title}</Typography>
+        </Grid>
+        <Grid item>
+          <Typography variant="h5">{data.author}</Typography>
+        </Grid>
+        <Grid item>
+          <Stack direction="row" spacing={1}>
+            {data.subjects.length!=0 && data.subjects.map((x) => (
+              <Chip label={x} />
+            ))}
+          </Stack>
+        </Grid>
+
         <Grid item display="flex">
           <Rating
             value={data.ratings_average}
-      
-           precision={0.5}
+            precision={0.5}
             max={5}
-            name="simple-controlled" 
-            onChange={(event, newValue) => {
-              setData(prev=>({...prev,ratings_average:newValue}))
-            }}
-           readOnly
-
+            name="read-only"
+            readOnly
           />
+
           <Typography>{data.ratings_average}</Typography>
         </Grid>
-
-        <Typography>
-          {data.description}
-        </Typography>
+        <Grid item>
+          <Typography>{data.description!=""?data.description:<em>No description available</em>}</Typography>
+        </Grid>
       </Grid>
     </Grid>
   );
