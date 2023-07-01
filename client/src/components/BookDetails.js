@@ -18,6 +18,7 @@ import FormControl from "@mui/material/FormControl";
 import { Select, Rating } from "@mui/material";
 import image from "../image.jpg";
 import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
+import BookShelves from "./BookShelves";
 
 const BookDetails = () => {
   const [data, setData] = useState({ ratings_average: 0,subjects:[] });
@@ -51,7 +52,7 @@ const subjects=res.data.subjects?res.data.subjects:[]
   }, []);
 
   return (
-    <Grid container p={5}>
+    <Grid container p={5} >
       <Grid
         item
         md={4}
@@ -76,6 +77,7 @@ const subjects=res.data.subjects?res.data.subjects:[]
           <FormControl sx={{ width: "50%", marginTop: "10px" }}>
             <Select
               id="demo-simple-select"
+              
               IconComponent={(props) => (
                 <Button
                   variant="contained"
@@ -87,6 +89,8 @@ const subjects=res.data.subjects?res.data.subjects:[]
                     borderEndStartRadius: 0,
                     borderStartStartRadius: 0,
                   }}
+                  disableElevation
+                  
                 >
                   <KeyboardArrowDown
                     sx={{ fontSize: "30px", color: "white" }}
@@ -136,10 +140,10 @@ const subjects=res.data.subjects?res.data.subjects:[]
         <Grid item>
           <Typography variant="h5">{data.author}</Typography>
         </Grid>
-        <Grid item>
-          <Stack direction="row" spacing={1}>
+        <Grid item >
+          <Stack direction="row" flexWrap="wrap" >
             {data.subjects.length!=0 && data.subjects.map((x) => (
-              <Chip label={x} />
+              <Chip label={x} sx={{mt:1,mr:1}}/>
             ))}
           </Stack>
         </Grid>
@@ -158,7 +162,11 @@ const subjects=res.data.subjects?res.data.subjects:[]
         <Grid item>
           <Typography>{data.description!=""?data.description:<em>No description available</em>}</Typography>
         </Grid>
+        <Grid item>
+        <BookShelves setData={setData}/>
       </Grid>
+      </Grid>
+    
     </Grid>
   );
 };

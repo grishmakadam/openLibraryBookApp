@@ -7,7 +7,8 @@ import { Link } from "react-router-dom";
 import { bookActions } from "../store/bookData";
 import { useDispatch, useSelector } from "react-redux";
 import { loaderActions } from "../store/loaderSlice";
-import CircularProgress from '@mui/material/CircularProgress';
+import CircularProgress from "@mui/material/CircularProgress";
+import Loader from "../assets/Loader";
 
 const Books = ({ title }) => {
   const URL = "http://openlibrary.org/search.json?q=";
@@ -17,14 +18,14 @@ const Books = ({ title }) => {
   const [data, setData] = useState([]);
   useEffect(() => {
     const getBookdata = async (term) => {
-   console.log(loader)
+      console.log(loader);
+      dispatch(loaderActions.set_loader());
       if (term == "") {
         term = "cora";
       }
-      
 
       const res = await axios.get(`${URL}${term}`);
-  
+
       if (res.data.docs) {
         const newBooks = res.data.docs.slice(0, 20).map((bookSingle) => {
           const {
@@ -56,18 +57,18 @@ const Books = ({ title }) => {
         console.log(newBooks);
         setData(newBooks);
 
-     dispatch(bookActions.add_data(newBooks));
-       
+        dispatch(bookActions.add_data(newBooks));
+        dispatch(loaderActions.remove_loader());
       }
     };
-    dispatch(loaderActions.set_loader())
+
     getBookdata(title);
-   dispatch(loaderActions.remove_loader())
-  
   }, [title]);
 
-  return (
-    loader ?  <CircularProgress/>: <Grid container spacing={4} justifyContent="center">
+  return loader ? (
+    <Loader/>
+  ) : (
+    <Grid container spacing={4} justifyContent="center">
       {data.length > 0 &&
         data.map((book) => (
           <Grid item xs={12} lg={3} md={5}>
@@ -89,9 +90,8 @@ const Books = ({ title }) => {
             </Link>
           </Grid>
         ))}
-    </Grid>)
-    
-  
+    </Grid>
+  );
 };
 
 export default Books;

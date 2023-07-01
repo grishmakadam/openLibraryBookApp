@@ -9,7 +9,7 @@ const loaderSlice = createSlice({
     set_loader(state,action) {
      
       state.load = true;
-   
+      
     },
     remove_loader(state,action) {
       state.load = false;
