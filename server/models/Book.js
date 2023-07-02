@@ -16,6 +16,10 @@ const bookSchema=mongoose.Schema({
     cover_id:{
         type:String,
         required:true
+    },status:{
+        type:Number,
+        enum : [-1,0,1],
+        default:-1
     }
 })
 

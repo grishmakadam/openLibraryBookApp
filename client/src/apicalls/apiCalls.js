@@ -1,5 +1,5 @@
 import axios from "axios";
-import { base_url, bookShelvesUrl, ratingsUrl } from "./url";
+import { addBookUrl, base_url, bookShelvesUrl, books_url, ratingsUrl } from "./url";
 
 const api = async (url) => {
   try {
@@ -10,6 +10,27 @@ const api = async (url) => {
   }
 };
 
+const backendApi=async(url,data)=>{
+console.log("hii")
+  try {
+    const res = await axios.post(url,{
+      ...data
+    },{
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    return res.data;
+  } catch (e) {
+    return false;
+  }
+}
+
+export const bookDetailsApi=(id)=>{
+  const url = base_url + id + ".json";
+  return api(url)
+}
+
 export const bookShelvesUrlApi = (id) => {
   const url = base_url + id + bookShelvesUrl;
   return api(url);
@@ -19,3 +40,9 @@ export const ratingsUrlApi = (id) => {
   const url = base_url + id + ratingsUrl;
   return api(url);
 };
+
+export const addBookApi=(data)=>{
+  console.log(data)
+  const url=books_url+addBookUrl
+  return backendApi(url,data)
+}

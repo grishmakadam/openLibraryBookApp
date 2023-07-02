@@ -19,31 +19,47 @@ import { Select, Rating } from "@mui/material";
 import image from "../image.jpg";
 import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
 import BookShelves from "./BookShelves";
+import { addBookApi, bookDetailsApi } from "../apicalls/apiCalls";
+import { loaderActions } from "../store/loaderSlice";
+import Loader from "../assets/Loader";
 
 const BookDetails = () => {
-  const [data, setData] = useState({ ratings_average: 0,subjects:[] });
+  const [data, setData] = useState({ ratings_average: 0, subjects: [],status:null });
   const { id } = useParams();
-  const books = useSelector(state=>state.book.books);
+  const books = useSelector((state) => state.book.books);
+  const loader = useSelector((state) => state.loader.load);
 
+  const dispatch = useDispatch();
+
+  const addBook=async()=>{
+ 
+    try{
+      console.log("add book")
+      const temp=await addBookApi({...data,name:"Grishma"})
+    }catch(e){
+      console.log(e)
+    }
+  }
   const getData = async () => {
+    dispatch(loaderActions.set_loader());
     try {
-      const res = await axios.get(`https://openlibrary.org/works/${id}.json`);
+      const data = await bookDetailsApi(id);
       const book = books.filter((x) => x.id.slice(7, x.id.length) == id);
-      const desc = !res.data.description
+      const desc = !data.description
         ? ""
-        : res.data.description.value
-        ? res.data.description.value
-        : res.data.description;
-const subjects=res.data.subjects?res.data.subjects:[]
+        : data.description.value
+        ? data.description.value
+        : data.description;
+      const subjects = data.subjects ? data.subjects : [];
       setData({
         ...book[0],
         description: desc,
         subjects: [...subjects],
       });
-      return res.data;
     } catch (e) {
       console.log(e);
     }
+    dispatch(loaderActions.remove_loader());
   };
   useEffect(() => {
     getData();
@@ -51,8 +67,10 @@ const subjects=res.data.subjects?res.data.subjects:[]
     console.log(books);
   }, []);
 
-  return (
-    <Grid container p={5} >
+  return loader ? (
+    <Loader />
+  ) : (
+    <Grid container p={5}>
       <Grid
         item
         md={4}
@@ -77,7 +95,6 @@ const subjects=res.data.subjects?res.data.subjects:[]
           <FormControl sx={{ width: "50%", marginTop: "10px" }}>
             <Select
               id="demo-simple-select"
-              
               IconComponent={(props) => (
                 <Button
                   variant="contained"
@@ -90,7 +107,6 @@ const subjects=res.data.subjects?res.data.subjects:[]
                     borderStartStartRadius: 0,
                   }}
                   disableElevation
-                  
                 >
                   <KeyboardArrowDown
                     sx={{ fontSize: "30px", color: "white" }}
@@ -98,7 +114,7 @@ const subjects=res.data.subjects?res.data.subjects:[]
                 </Button>
               )}
               //value={age}
-
+              onChange={(e)=>setData(prev=>({...prev,status:e.target.value}))}
               defaultValue={10}
               sx={{
                 height: "45px",
@@ -119,11 +135,14 @@ const subjects=res.data.subjects?res.data.subjects:[]
 
               // onChange={handleChange}
             >
-              <MenuItem value={10}>Want to Read</MenuItem>
-              <MenuItem value={20}>Reading</MenuItem>
-              <MenuItem value={30}>Read</MenuItem>
+              <MenuItem value={-1}>Want to Read</MenuItem>
+              <MenuItem value={0}>Reading</MenuItem>
+              <MenuItem value={1}>Read</MenuItem>
             </Select>
           </FormControl>
+        </Grid>
+        <Grid item>
+          <Button onClick={()=>addBook()}>Add Book</Button>
         </Grid>
       </Grid>
       <Grid
@@ -140,11 +159,12 @@ const subjects=res.data.subjects?res.data.subjects:[]
         <Grid item>
           <Typography variant="h5">{data.author}</Typography>
         </Grid>
-        <Grid item >
-          <Stack direction="row" flexWrap="wrap" >
-            {data.subjects.length!=0 && data.subjects.map((x) => (
-              <Chip label={x} sx={{mt:1,mr:1}}/>
-            ))}
+        <Grid item>
+          <Stack direction="row" flexWrap="wrap">
+            {data.subjects.length != 0 &&
+              data.subjects.map((x) => (
+                <Chip label={x} sx={{ mt: 1, mr: 1 }} />
+              ))}
           </Stack>
         </Grid>
 
@@ -160,13 +180,18 @@ const subjects=res.data.subjects?res.data.subjects:[]
           <Typography>{data.ratings_average}</Typography>
         </Grid>
         <Grid item>
-          <Typography>{data.description!=""?data.description:<em>No description available</em>}</Typography>
+          <Typography>
+            {data.description != "" ? (
+              data.description
+            ) : (
+              <em>No description available</em>
+            )}
+          </Typography>
         </Grid>
         <Grid item>
-        <BookShelves setData={setData}/>
+          <BookShelves setData={setData} />
+        </Grid>
       </Grid>
-      </Grid>
-    
     </Grid>
   );
 };

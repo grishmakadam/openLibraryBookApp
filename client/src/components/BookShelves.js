@@ -11,9 +11,11 @@ const BookShelves = ({ setData }) => {
   useEffect(() => {
     const func = async () => {
       // const data=await bookShelvesUrlApi(id)
+      console.log("ratings")
       const data = await ratingsUrlApi(id);
+      console.log(data)
       setShelves({ ...data.counts });
-      if (data.summary.average != 0) {
+      if (data.summary.average && data.summary.average != 0) {
         setData((prev) => ({ ...prev, ratings_average: data.summary.average }));
       }
     };
@@ -25,7 +27,7 @@ const BookShelves = ({ setData }) => {
         <Typography variant="h5">Community Reviews</Typography>
       </Grid>
       <Grid item container flexDirection="column" >
-        <Grid item display="flex" width="200px" justifyContent="space-between" width="200px" justifyContent="space-between">
+        <Grid item display="flex" width="200px" justifyContent="space-between"  >
           <Typography variant="body1" >1 star</Typography>
           <Rating
             value={shelves["1"]}
