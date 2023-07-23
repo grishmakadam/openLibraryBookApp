@@ -18,7 +18,12 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
-import { AccountCircle, Logout, MenuBook, SearchOutlined } from "@mui/icons-material";
+import {
+  AccountCircle,
+  Logout,
+  MenuBook,
+  SearchOutlined,
+} from "@mui/icons-material";
 import { TextField } from "@mui/material";
 import Books from "./Books";
 
@@ -89,8 +94,13 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-export default function Navbar({ setCall, handleKey, changeTitle, title ,call}) {
-
+export default function Navbar({
+  setCall,
+  handleKey,
+  changeTitle,
+  title,
+  call,
+}) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -127,19 +137,19 @@ export default function Navbar({ setCall, handleKey, changeTitle, title ,call}) 
             value={title}
             onChange={changeTitle}
             sx={{
-              backgroundColor:"#fff",
+              backgroundColor: "#fff",
               "& label.Mui-focused": {
-                color: "#3f8363",
+                color: "primary",
               },
               "& .MuiOutlinedInput-root": {
                 "& fieldset": {
-                  borderColor: "#3f8363",
+                  borderColor: "primary",
                 },
                 "&:hover fieldset": {
-                  borderColor: "#3f8363",
+                  borderColor: "primary",
                 },
                 "&.Mui-focused fieldset": {
-                  borderColor: "#3f8363",
+                  borderColor: "primary",
                 },
               },
             }}
@@ -166,7 +176,7 @@ export default function Navbar({ setCall, handleKey, changeTitle, title ,call}) 
         </DrawerHeader>
         <Divider />
         <List>
-          {["Profile","My Books" ].map((text, index) => (
+          {["Profile", "My Books"].map((text, index) => (
             <ListItem key={text} disablePadding sx={{ display: "block" }}>
               <ListItemButton
                 sx={{
@@ -182,7 +192,7 @@ export default function Navbar({ setCall, handleKey, changeTitle, title ,call}) 
                     justifyContent: "center",
                   }}
                 >
-                  {index % 2 === 0 ? <AccountCircle/> : <MenuBook />}
+                  {index % 2 === 0 ? <AccountCircle /> : <MenuBook />}
                 </ListItemIcon>
                 <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
@@ -207,7 +217,7 @@ export default function Navbar({ setCall, handleKey, changeTitle, title ,call}) 
                     justifyContent: "center",
                   }}
                 >
-                  {index % 2 === 0 ? <Logout/> : <MailIcon />}
+                  {index % 2 === 0 ? <Logout /> : <MailIcon />}
                 </ListItemIcon>
                 <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
@@ -246,7 +256,7 @@ export default function Navbar({ setCall, handleKey, changeTitle, title ,call}) 
           eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
           posuere sollicitudin aliquam ultrices sagittis orci a.
         </Typography> */}
-         {call && <Books title={title} />}
+        {call && <Books title={title} />}
       </Box>
     </Box>
   );

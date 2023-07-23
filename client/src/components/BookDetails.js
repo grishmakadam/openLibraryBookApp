@@ -105,7 +105,7 @@ const BookDetails = () => {
                   sx={{
                     height: "100%",
                     m: "-16px -7px 0 0",
-                    background: "#3f8363",
+                    background: "primary",
                     borderEndStartRadius: 0,
                     borderStartStartRadius: 0,
                   }}
@@ -125,13 +125,13 @@ const BookDetails = () => {
                 height: "45px",
                 width: "250px",
                 ".MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#3f8363",
+                  borderColor: "primary",
                 },
                 "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#3f8363",
+                  borderColor: "primary",
                 },
                 "&:hover .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#3f8363",
+                  borderColor: "primary",
                 },
                 ".MuiSvgIcon-root ": {
                   fill: "white !important",
@@ -152,13 +152,13 @@ const BookDetails = () => {
             fullWidth
             variant="outlined"
             sx={{
-              borderColor: "#3f8363",
-              color: "#3f8363",
+              borderColor: "primary",
+              color: "primary",
               height: "40px",
               width: "250px",
               "&:hover": {
                 backgroundColor: "#3f836322",
-                borderColor: "#3f8363",
+                borderColor: "primary",
               },
             }}
           >
