@@ -24,22 +24,25 @@ import { loaderActions } from "../store/loaderSlice";
 import Loader from "../assets/Loader";
 
 const BookDetails = () => {
-  const [data, setData] = useState({ ratings_average: 0, subjects: [],status:null });
+  const [data, setData] = useState({
+    ratings_average: 0,
+    subjects: [],
+    status: null,
+  });
   const { id } = useParams();
   const books = useSelector((state) => state.book.books);
   const loader = useSelector((state) => state.loader.load);
 
   const dispatch = useDispatch();
 
-  const addBook=async()=>{
- 
-    try{
-      console.log("add book")
-      const temp=await addBookApi({...data,name:"Grishma"})
-    }catch(e){
-      console.log(e)
+  const addBook = async () => {
+    try {
+      console.log("add book");
+      const temp = await addBookApi({ ...data, name: "Grishma" });
+    } catch (e) {
+      console.log(e);
     }
-  }
+  };
   const getData = async () => {
     dispatch(loaderActions.set_loader());
     try {
@@ -114,8 +117,10 @@ const BookDetails = () => {
                 </Button>
               )}
               //value={age}
-              onChange={(e)=>setData(prev=>({...prev,status:e.target.value}))}
-              defaultValue={10}
+              onChange={(e) =>
+                setData((prev) => ({ ...prev, status: e.target.value }))
+              }
+              defaultValue={-1}
               sx={{
                 height: "45px",
                 width: "250px",
@@ -142,7 +147,23 @@ const BookDetails = () => {
           </FormControl>
         </Grid>
         <Grid item>
-          <Button onClick={()=>addBook()}>Add Book</Button>
+          <Button
+            onClick={() => addBook()}
+            fullWidth
+            variant="outlined"
+            sx={{
+              borderColor: "#3f8363",
+              color: "#3f8363",
+              height: "40px",
+              width: "250px",
+              "&:hover": {
+                backgroundColor: "#3f836322",
+                borderColor: "#3f8363",
+              },
+            }}
+          >
+            Add Book
+          </Button>
         </Grid>
       </Grid>
       <Grid

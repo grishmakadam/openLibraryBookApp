@@ -68,7 +68,7 @@ const Books = ({ title }) => {
   return loader ? (
     <Loader/>
   ) : (
-    <Grid container spacing={4} justifyContent="center">
+    <Grid container spacing={4} justifyContent="center" my={"30px"}>
       {data.length > 0 &&
         data.map((book) => (
           <Grid item xs={12} lg={3} md={5}>

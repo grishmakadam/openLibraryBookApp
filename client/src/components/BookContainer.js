@@ -3,6 +3,7 @@ import { IconButton, Container, TextField, CircularProgress } from "@mui/materia
 import Books from "./Books";
 import { useState, useEffect } from "react";
 import { SearchOutlined } from "@mui/icons-material";
+import Navbar from "./Navbar";
 
 const BookContainer = () => {
   const [title, setTitle] = useState("");
@@ -19,38 +20,9 @@ const BookContainer = () => {
   };
   return (
     <Container>
-      <TextField
-        label="Search"
-        value={title}
-        onChange={changeTitle}
-        sx={{
-          my: 8,
-          '& label.Mui-focused': {
-            color: '#3f8363',
-          },
-          '& .MuiOutlinedInput-root': {
-            '& fieldset': {
-              borderColor: '#3f8363',
-            },
-            '&:hover fieldset': {
-              borderColor: '#3f8363',
-            },
-            '&.Mui-focused fieldset': {
-              borderColor: '#3f8363',
-            },
-          },
-        }}
-        onKeyPress={handleKey}
-        InputProps={{
-          endAdornment: (
-            <IconButton onClick={(e) => setCall(true)}>
-              <SearchOutlined />
-            </IconButton>
-          ),
-        }}
-      />
-
-      {call && <Books title={title} />}
+      <Navbar setCall={setCall} changeTitle={changeTitle} handleKey={handleKey} title={title} call={call}/>
+      
+     
     </Container>
   );
 };

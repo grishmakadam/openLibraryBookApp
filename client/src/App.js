@@ -8,6 +8,7 @@ import BookDetails from './components/BookDetails';
 import BookContainer from './components/BookContainer';
 import Loader from './assets/Loader';
 import { useSelector } from 'react-redux';
+import Log_Sign from './components/Log_Sign';
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
     <Routes>
       <Route path="/book/:id" element={<BookDetails/>}/>
       <Route exact path="/" element={<BookContainer/>}/>
+      <Route path="/user/:id" element={<Log_Sign/>}/>
     </Routes>
     </BrowserRouter>
  

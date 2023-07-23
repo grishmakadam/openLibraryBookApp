@@ -1,5 +1,5 @@
 import axios from "axios";
-import { addBookUrl, base_url, bookShelvesUrl, books_url, ratingsUrl } from "./url";
+import { addBookUrl, base_url, bookShelvesUrl, books_url, ratingsUrl, signup, users_url } from "./url";
 
 const api = async (url) => {
   try {
@@ -44,5 +44,10 @@ export const ratingsUrlApi = (id) => {
 export const addBookApi=(data)=>{
   console.log(data)
   const url=books_url+addBookUrl
+  return backendApi(url,data)
+}
+
+export const adduserApi=(data)=>{
+  const url=users_url+signup
   return backendApi(url,data)
 }
