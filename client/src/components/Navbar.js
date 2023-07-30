@@ -24,8 +24,9 @@ import {
   MenuBook,
   SearchOutlined,
 } from "@mui/icons-material";
-import { TextField } from "@mui/material";
+import { LinearProgress, TextField } from "@mui/material";
 import Books from "./Books";
+import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -103,7 +104,7 @@ export default function Navbar({
 }) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-
+  const navigate = useNavigate();
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -201,8 +202,13 @@ export default function Navbar({
         </List>
         <Divider />
         <List>
-          {["Log Out"].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: "block" }}>
+          {[{ text: "Log Out", link: "/user/login" }].map((text, index) => (
+            <ListItem
+              key={text}
+              disablePadding
+              sx={{ display: "block" }}
+              onClick={() => navigate(text.link)}
+            >
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -219,7 +225,10 @@ export default function Navbar({
                 >
                   {index % 2 === 0 ? <Logout /> : <MailIcon />}
                 </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText
+                  primary={text.text}
+                  sx={{ opacity: open ? 1 : 0 }}
+                />
               </ListItemButton>
             </ListItem>
           ))}
@@ -256,6 +265,7 @@ export default function Navbar({
           eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
           posuere sollicitudin aliquam ultrices sagittis orci a.
         </Typography> */}
+
         {call && <Books title={title} />}
       </Box>
     </Box>

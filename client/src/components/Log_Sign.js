@@ -18,7 +18,10 @@ import MailIcon from "@mui/icons-material/Mail";
 import { AccountCircle, Visibility, VisibilityOff } from "@mui/icons-material";
 import Input from "./Input";
 import { adduserApi } from "../apicalls/apiCalls";
+import { randomQuotegenerator } from "../utils/randomIndex";
 //   import { UserContext } from "./Context";
+
+import FlipCard from "../assets/flipcard";
 
 const Log_Sign = () => {
   const navigate = useNavigate();
@@ -119,8 +122,6 @@ const Log_Sign = () => {
   const [error, setError] = useState();
   const [loading, setLoading] = useState();
 
-  // const { signup, error: signerror, loading: signloading } = useSignup()
-  // const { login, error: lerror, loading: lLoading } = useLogin()
   const { id } = useParams();
 
   const [data, setData] = useState({
@@ -176,200 +177,205 @@ const Log_Sign = () => {
         backgroundColor: "primary",
       }}
     >
-      <form
-        onSubmit={submitHandler}
+      <Grid
+        item
+        xs={6}
         style={{
           display: "flex",
-          flexDirection: "column",
           alignItems: "center",
-          padding: "20px 20px",
-          boxShadow: "1px 1px #ccc",
-          backgroundColor: "#D8DEE9",
-          borderRadius: "10px",
+          justifyContent: "center",
+          backgroundColor: "#c9ab75",
+          height: "100%",
+          width: "100%",
         }}
       >
-        <Typography style={{ fontSize: "20px", color: "primary" }}>
-          {type == "login" ? "Login" : "Signup"}
-        </Typography>
-
-        <Grid
-          container
-          spacing={2}
-          style={{
-            width: "600px",
-
-            alignItems: "center",
-            justifyContent: "center",
-            padding: "10px 20px",
-          }}
-        >
-          {type == "signup" && (
-            <Grid item md={6} xs={12} display="flex" flexDirection={"column"}>
-              <Input
-                value={data.name}
-                onChange={onChangeData}
-                label="User Name"
-                name="name"
-                type="text"
-                error={!valid.name}
-                helperText={!valid.name ? "Username is required" : " "}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment
-                      position="start"
-                      style={{ color: "primary" }}
-                    >
-                      <AccountCircle />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </Grid>
-          )}
+        <FlipCard thought={randomQuotegenerator()} />
+      </Grid>
+      <Grid item xs={6}>
+        {" "}
+        <form onSubmit={submitHandler}>
           <Grid
-            item
-            md={type == "signup" ? 6 : 12}
-            xs={12}
-            display="flex"
-            flexDirection={"column"}
-          >
-            <Input
-              value={data.email}
-              onChange={onChangeData}
-              label="Email"
-              name="email"
-              error={!valid.email}
-              helperText={!valid.email ? "Enter valid email" : " "}
-              type="email"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start" style={{ color: "primary" }}>
-                    <MailIcon />
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </Grid>
-          <Grid
-            item
-            md={type == "signup" ? 6 : 12}
-            xs={12}
-            display="flex"
-            flexDirection={"column"}
-          >
-            <Input
-              label="Password"
-              type={showPassword.password ? "text" : "password"}
-              value={data.password}
-              name="password"
-              onChange={onChangeData}
-              error={!valid.password}
-              helperText={!valid.password ? "Password is required" : " "}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      edge="end"
-                      onClick={() =>
-                        setShowPassword((prev) => ({
-                          ...prev,
-                          password: !prev.password,
-                        }))
-                      }
-                      style={{ color: "primary" }}
-                    >
-                      {showPassword.password ? (
-                        <Visibility />
-                      ) : (
-                        <VisibilityOff />
-                      )}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </Grid>
-          {type == "signup" && (
-            <Grid item md={6} xs={12} display="flex" flexDirection={"column"}>
-              <Input
-                label="Confirm Password"
-                value={data.confirm}
-                name="confirm"
-                onChange={onChangeData}
-                error={!valid.confirm}
-                helperText={!valid.confirm ? "Password did not match" : " "}
-                type={showPassword.confirm ? "text" : "password"}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        edge="end"
-                        onClick={() =>
-                          setShowPassword((prev) => ({
-                            ...prev,
-                            confirm: !prev.confirm,
-                          }))
-                        }
-                        style={{ color: "primary" }}
-                      >
-                        {showPassword.confirm ? (
-                          <Visibility />
-                        ) : (
-                          <VisibilityOff />
-                        )}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </Grid>
-          )}
-          <Grid
-            item
-            xs={12}
+            container
             style={{
               display: "flex",
-              flexDirection: "column",
               alignItems: "center",
+              justifyContent: "center",
+              flexDirection: "column",
             }}
           >
-            <Button
-              type="submit"
-              disabled={loading}
-              fullWidth
+            <Grid item>
+              <Typography style={{ fontSize: "20px", color: "primary" }}>
+                {type == "login" ? "Login" : "Signup"}
+              </Typography>
+            </Grid>
+
+            <Grid
+              item
+              container
               style={{
-                marginTop: "20px",
-                padding: "10px",
-                backgroundColor: "primary",
-                color: "#D8DEE9",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                width: "400px",
               }}
-              variant="contained"
             >
-              {type == "signup" ? "Submit" : "LogIn"}
-            </Button>
-            <Typography variant="h7" style={{ margin: "10px 0" }}>
-              OR
-            </Typography>
-            <Button
-              disabled={loading}
-              type="button"
-              fullWidth
-              style={{
-                padding: "10px",
-                color: "primary",
-                ":hover": {
-                  backgroundColor: "primary",
-                },
-              }}
-              onClick={handleType}
-            >
-              {type != "signup" ? "SignUp" : "LogIn"}
-            </Button>
+              {" "}
+              {type == "signup" && (
+                <Grid item xs={12} display="flex" flexDirection={"column"}>
+                  <Input
+                    value={data.name}
+                    onChange={onChangeData}
+                    label="User Name"
+                    name="name"
+                    type="text"
+               
+                    error={!valid.name}
+                    helperText={!valid.name ? "Username is required" : " "}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment
+                          position="start"
+                          style={{ color: "primary" }}
+                        >
+                          <AccountCircle />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </Grid>
+              )}
+              <Grid item xs={12} display="flex" flexDirection={"column"}>
+                <Input
+                  value={data.email}
+                  onChange={onChangeData}
+                  label="Email"
+                  name="email"
+                  error={!valid.email}
+                  helperText={!valid.email ? "Enter valid email" : " "}
+                  type="email"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment
+                        position="start"
+                        style={{ color: "primary" }}
+                      >
+                        <MailIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12} display="flex" flexDirection={"column"}>
+                <Input
+                  label="Password"
+                  type={showPassword.password ? "text" : "password"}
+                  value={data.password}
+                  name="password"
+                  onChange={onChangeData}
+                  error={!valid.password}
+                  helperText={!valid.password ? "Password is required" : " "}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          edge="end"
+                          onClick={() =>
+                            setShowPassword((prev) => ({
+                              ...prev,
+                              password: !prev.password,
+                            }))
+                          }
+                          style={{ color: "primary" }}
+                        >
+                          {showPassword.password ? (
+                            <Visibility />
+                          ) : (
+                            <VisibilityOff />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </Grid>
+              {type == "signup" && (
+                <Grid item xs={12} display="flex" flexDirection={"column"}>
+                  <Input
+                    label="Confirm Password"
+                    value={data.confirm}
+                    name="confirm"
+                    onChange={onChangeData}
+                    error={!valid.confirm}
+                    helperText={!valid.confirm ? "Password did not match" : " "}
+                    type={showPassword.confirm ? "text" : "password"}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            edge="end"
+                            onClick={() =>
+                              setShowPassword((prev) => ({
+                                ...prev,
+                                confirm: !prev.confirm,
+                              }))
+                            }
+                            style={{ color: "primary" }}
+                          >
+                            {showPassword.confirm ? (
+                              <Visibility />
+                            ) : (
+                              <VisibilityOff />
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </Grid>
+              )}
+            
+                  <Button
+                    type="submit"
+                    disabled={loading}
+                    style={{
+                      marginTop: "20px",
+                      padding: "10px",
+                      backgroundColor: "primary",
+                      color: "#D8DEE9",
+                      width:"254.67px"
+                   
+                    }}
+                    variant="contained"
+                  >
+                    {type == "signup" ? "Submit" : "LogIn"}
+                  </Button>
+             
+
+                <Typography variant="h7" style={{ margin: "10px 0" }}>
+                  OR
+                </Typography>
+                <Button
+                  disabled={loading}
+                  type="button"
+                  fullWidth
+                  style={{
+                    padding: "10px",
+                    color: "primary",
+                    ":hover": {
+                      backgroundColor: "primary",
+                    },
+                  }}
+                  onClick={handleType}
+                >
+                  {type != "signup" ? "SignUp" : "LogIn"}
+                </Button>
+             
+            </Grid>
           </Grid>
-        </Grid>
-      </form>
+        </form>
+      </Grid>
     </Grid>
   );
 };
