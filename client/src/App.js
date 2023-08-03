@@ -17,17 +17,22 @@ function App() {
       primary: {
         main: "#3f8363",
       },
+      secondary: {
+        main:"#fff"
+      },
+     
     },
   });
   return (
     <ThemeProvider theme={theme}>
-      <BrowserRouter>
+      {/* <BrowserRouter>
         <Routes>
           <Route path="/book/:id" element={<BookDetails />} />
           <Route exact path="/" element={<BookContainer />} />
           <Route path="/user/:id" element={<Log_Sign />} />
         </Routes>
-      </BrowserRouter>
+      </BrowserRouter> */}
+      <BookContainer/>
     </ThemeProvider>
   );
 }

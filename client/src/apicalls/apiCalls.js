@@ -11,7 +11,6 @@ const api = async (url) => {
 };
 
 const backendApi=async(url,data)=>{
-console.log("hii")
   try {
     const res = await axios.post(url,{
       ...data

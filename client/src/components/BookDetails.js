@@ -22,13 +22,19 @@ import BookShelves from "./BookShelves";
 import { addBookApi, bookDetailsApi } from "../apicalls/apiCalls";
 import { loaderActions } from "../store/loaderSlice";
 import Loader from "../assets/Loader";
+import ModelComp from "./ModalComp";
 
 const BookDetails = () => {
   const [data, setData] = useState({
     ratings_average: 0,
     subjects: [],
     status: null,
+    progress:null
   });
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   const { id } = useParams();
   const books = useSelector((state) => state.book.books);
   const loader = useSelector((state) => state.loader.load);
@@ -73,14 +79,13 @@ const BookDetails = () => {
   return loader ? (
     <Loader />
   ) : (
-    <Grid container p={5}>
+    <Grid container marginTop="60px">
       <Grid
         item
         md={4}
         alignItems="center"
         display="flex"
         flexDirection="column"
-        justifyContent="center"
         container
         spacing={2}
       >
@@ -148,7 +153,7 @@ const BookDetails = () => {
         </Grid>
         <Grid item>
           <Button
-            onClick={() => addBook()}
+            onClick={() => handleOpen()}
             fullWidth
             variant="outlined"
             sx={{
@@ -183,9 +188,22 @@ const BookDetails = () => {
         <Grid item>
           <Stack direction="row" flexWrap="wrap">
             {data.subjects.length != 0 &&
-              data.subjects.map((x) => (
-                <Chip label={x} sx={{ mt: 1, mr: 1 }} />
-              ))}
+              data.subjects.map((x, i) => {
+                if (i < 12) {
+                  return <Chip label={x} sx={{ mt: 1, mr: 1 }} />;
+                }
+              })}
+            {data.subjects.length > 12 && (
+              <Chip
+                label="See more"
+                sx={{
+                  mt: 1,
+                  mr: 1,
+                  backgroundColor: "primary.main",
+                  color: "secondary.main",
+                }}
+              />
+            )}
           </Stack>
         </Grid>
 
@@ -212,7 +230,8 @@ const BookDetails = () => {
         <Grid item>
           <BookShelves setData={setData} />
         </Grid>
-      </Grid>
+        </Grid>
+        <ModelComp open={open} handleClose={handleClose} data={data}  setData={setData}/>
     </Grid>
   );
 };

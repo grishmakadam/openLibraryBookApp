@@ -26,6 +26,9 @@ import {
 } from "@mui/icons-material";
 import { TextField } from "@mui/material";
 import Books from "./Books";
+import { Route, Routes } from "react-router-dom";
+import BookDetails from "./BookDetails";
+import Log_Sign from "./Log_Sign";
 
 const drawerWidth = 240;
 
@@ -94,13 +97,7 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-export default function Navbar({
-  setCall,
-  handleKey,
-  changeTitle,
-  title,
-  call,
-}) {
+export default function Navbar({ handleKey, changeTitle, title }) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -156,7 +153,7 @@ export default function Navbar({
             onKeyPress={handleKey}
             InputProps={{
               endAdornment: (
-                <IconButton onClick={(e) => setCall(true)}>
+                <IconButton onClick={handleKey}>
                   <SearchOutlined />
                 </IconButton>
               ),
@@ -256,7 +253,12 @@ export default function Navbar({
           eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
           posuere sollicitudin aliquam ultrices sagittis orci a.
         </Typography> */}
-        {call && <Books title={title} />}
+       <Routes>
+         
+          <Route exact path="/:id" element={<Books />} />
+          <Route path="/book/:id" element={<BookDetails />} />
+          <Route path="/user/:id" element={<Log_Sign />} />
+        </Routes>
       </Box>
     </Box>
   );

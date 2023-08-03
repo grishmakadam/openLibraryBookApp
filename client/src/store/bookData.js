@@ -17,8 +17,18 @@ const persistConfig = {
 
 const bookSlice = createSlice({
   name: "books",
-  initialState: { books: [] },
+  initialState: { search: "", change: false, books: [] },
   reducers: {
+    add_searchTerm(state, action) {
+      console.log(state.search, action.payload);
+
+      if (state.search != action.payload) {
+        state.change = true;
+      } else {
+        state.change = false;
+      }
+      state.search = action.payload;
+    },
     add_data(state, action) {
       state.books = action.payload;
     },
