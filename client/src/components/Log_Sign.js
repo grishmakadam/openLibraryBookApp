@@ -64,6 +64,7 @@ const Log_Sign = () => {
 
       if (res.success) {
         //   dispatch({ type: "login", payload: { ...res } });
+        console.log(res)
         navigate("/");
       } else {
         console.log("error");
@@ -174,24 +175,24 @@ const Log_Sign = () => {
         alignItems: "center",
         justifyContent: "center",
         height: "100vh",
-        backgroundColor: "primary",
       }}
     >
       <Grid
         item
-        xs={6}
+        md={6}
+        xs={12}
         style={{
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: "#c9ab75",
+          backgroundColor: "#3f8363",
           height: "100%",
           width: "100%",
         }}
       >
         <FlipCard thought={randomQuotegenerator()} />
       </Grid>
-      <Grid item xs={6}>
+      <Grid item md={6} xs={12}>
         {" "}
         <form onSubmit={submitHandler}>
           <Grid
@@ -228,7 +229,6 @@ const Log_Sign = () => {
                     label="User Name"
                     name="name"
                     type="text"
-               
                     error={!valid.name}
                     helperText={!valid.name ? "Username is required" : " "}
                     InputProps={{
@@ -335,43 +335,39 @@ const Log_Sign = () => {
                   />
                 </Grid>
               )}
-            
-                  <Button
-                    type="submit"
-                    disabled={loading}
-                    style={{
-                      marginTop: "20px",
-                      padding: "10px",
-                      backgroundColor: "primary",
-                      color: "#D8DEE9",
-                      width:"254.67px"
-                   
-                    }}
-                    variant="contained"
-                  >
-                    {type == "signup" ? "Submit" : "LogIn"}
-                  </Button>
-             
-
-                <Typography variant="h7" style={{ margin: "10px 0" }}>
-                  OR
-                </Typography>
-                <Button
-                  disabled={loading}
-                  type="button"
-                  fullWidth
-                  style={{
-                    padding: "10px",
-                    color: "primary",
-                    ":hover": {
-                      backgroundColor: "primary",
-                    },
-                  }}
-                  onClick={handleType}
-                >
-                  {type != "signup" ? "SignUp" : "LogIn"}
-                </Button>
-             
+              <Button
+                type="submit"
+                disabled={loading}
+                style={{
+                  marginTop: "20px",
+                  padding: "10px",
+                  backgroundColor: "primary",
+                  color: "#D8DEE9",
+                  width: "300px",
+                }}
+                variant="contained"
+              >
+                {type == "signup" ? "Submit" : "LogIn"}
+              </Button>
+              <Typography variant="h7" style={{ margin: "10px 0" }}>
+                OR
+              </Typography>
+              <Button
+                disabled={loading}
+                type="button"
+                fullWidth
+                style={{
+                  padding: "10px",
+                  color: "primary",
+                  ":hover": {
+                    backgroundColor: "primary",
+                  },
+                  width: "300px",
+                }}
+                onClick={handleType}
+              >
+                {type != "signup" ? "SignUp" : "LogIn"}
+              </Button>
             </Grid>
           </Grid>
         </form>

@@ -8,7 +8,7 @@ export default function FlipCard({thought}) {
     <div className="flip-card">
     <div className="flip-card-inner">
       <div className="flip-card-front">
-        <img src={book} alt="Avatar" style={{width:"300px",height:"300px"}}/>
+        <img src={book} alt="Avatar" style={{width:"300px",height:"300px",borderRadius:'10px'}}/>
       </div>
       <div className="flip-card-back">
        <Typography variant='body'>{thought.quote}</Typography>

@@ -1,6 +1,14 @@
 import axios from "axios";
-import { addBookUrl, base_url, bookShelvesUrl, books_url, ratingsUrl, signup, users_url } from "./url";
-
+import {
+  addBookUrl,
+  base_url,
+  bookShelvesUrl,
+  books_url,
+  ratingsUrl,
+  signup,
+  users_url,
+} from "./url";
+axios.defaults.withCredentials = true;
 const api = async (url) => {
   try {
     const data = await axios.get(url);
@@ -10,26 +18,32 @@ const api = async (url) => {
   }
 };
 
-const backendApi=async(url,data)=>{
-console.log("hii")
+const backendApi = async (url, data) => {
+  console.log("hii");
   try {
-    const res = await axios.post(url,{
-      ...data
-    },{
-      headers: {
-        'Content-Type': 'application/json'
+    const res = await axios.post(
+      url,
+      {
+        ...data,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
       }
-    });
+    );
+    console.log(res)
     return res.data;
   } catch (e) {
+    console.log(e.message)
     return false;
   }
-}
+};
 
-export const bookDetailsApi=(id)=>{
+export const bookDetailsApi = (id) => {
   const url = base_url + id + ".json";
-  return api(url)
-}
+  return api(url);
+};
 
 export const bookShelvesUrlApi = (id) => {
   const url = base_url + id + bookShelvesUrl;
@@ -41,13 +55,13 @@ export const ratingsUrlApi = (id) => {
   return api(url);
 };
 
-export const addBookApi=(data)=>{
-  console.log(data)
-  const url=books_url+addBookUrl
-  return backendApi(url,data)
-}
+export const addBookApi = (data) => {
+  console.log(data);
+  const url = books_url + addBookUrl;
+  return backendApi(url, data);
+};
 
-export const adduserApi=(data)=>{
-  const url=users_url+signup
-  return backendApi(url,data)
-}
+export const adduserApi = (data) => {
+  const url = users_url + signup;
+  return backendApi(url, data);
+};

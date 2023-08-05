@@ -2,6 +2,7 @@ const User = require("../models/User");
 
 module.exports = {
   signup: async (req, res) => {
+    console.log("hello")
     try {
       const { name, email, password } = req.body;
       const user = await User.signup(name, email, password);
@@ -19,9 +20,14 @@ module.exports = {
       const user = await User.login(email, password);
       const name = user.name;
       const token = await createToken(email);
-      res.json({ name, email, token, image });
+      res.cookie("token", token, {
+        expires: new Date(Date.now() + 900000000),
+        httpOnly: true,
+        secure: true,
+      });
+      res.json({ sucess:true,name, email, image });
     } catch (e) {
-      res.status(400).json({ error: e.message });
+      res.status(400).json({sucess:false, error: e.message });
     }
   },
 };

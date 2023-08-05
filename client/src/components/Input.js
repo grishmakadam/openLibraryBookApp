@@ -21,9 +21,10 @@ import {
         </InputLabel>
         <TextField
           variant="outlined"
-          style={{ height: "64px" }}
+          style={{ height: "64px",width:"300px" }}
           fullWidth
           size="small"
+          InputLabelProps={{shrink: false}}
           {...props}
           label={false}
         />
