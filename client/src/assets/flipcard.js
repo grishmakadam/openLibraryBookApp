@@ -11,9 +11,9 @@ export default function FlipCard({thought}) {
         <img src={book} alt="Avatar" style={{width:"300px",height:"300px",borderRadius:'10px'}}/>
       </div>
       <div className="flip-card-back">
-       <Typography variant='body'>{thought.quote}</Typography>
+       <Typography variant='body' sx={{fontStyle:"italic",fontSize:"18px",padding:"10px",}}><q>{thought.quote}</q></Typography>
        <Divider/>
-       <Typography variant='h7'>{thought.author}</Typography>
+       <Typography variant='h7' alignSelf="flex-end" sx={{fontStyle:"italic",fontSize:"18px",padding:"10px",}}>~{thought.author}</Typography>
       </div>
     </div>
   </div>

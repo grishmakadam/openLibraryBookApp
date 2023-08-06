@@ -13,3 +13,5 @@ export const addBookUrl='/addbook'
 
 export const signup='/addUser'
 
+export const login="/login"
+

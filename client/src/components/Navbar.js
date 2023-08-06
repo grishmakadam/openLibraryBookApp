@@ -140,17 +140,20 @@ export default function Navbar({
             sx={{
               backgroundColor: "#fff",
               "& label.Mui-focused": {
-                color: "primary",
+                color: "#8d8d8d",
               },
               "& .MuiOutlinedInput-root": {
                 "& fieldset": {
                   borderColor: "primary",
+                  border:"8px"
+                 
                 },
                 "&:hover fieldset": {
                   borderColor: "primary",
                 },
                 "&.Mui-focused fieldset": {
                   borderColor: "primary",
+                  
                 },
               },
             }}

@@ -2,11 +2,17 @@ const User = require("../models/User");
 
 module.exports = {
   signup: async (req, res) => {
-    console.log("hello")
+  
     try {
       const { name, email, password } = req.body;
       const user = await User.signup(name, email, password);
       const newUser = await user.save();
+      const token = await createToken(email);
+      res.cookie("token", token, {
+        expires: new Date(Date.now() + 900000000),
+        httpOnly: true,
+        secure: true,
+      });
       res.json({success:true,...newUser});
     } catch (e) {
       console.log(e.message);

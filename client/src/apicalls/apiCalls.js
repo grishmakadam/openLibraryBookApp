@@ -4,11 +4,12 @@ import {
   base_url,
   bookShelvesUrl,
   books_url,
+  login,
   ratingsUrl,
   signup,
   users_url,
 } from "./url";
-axios.defaults.withCredentials = true;
+
 const api = async (url) => {
   try {
     const data = await axios.get(url);
@@ -30,7 +31,8 @@ const backendApi = async (url, data) => {
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
+     { withCredentials:true}
     );
     console.log(res)
     return res.data;
@@ -65,3 +67,8 @@ export const adduserApi = (data) => {
   const url = users_url + signup;
   return backendApi(url, data);
 };
+
+export const loginApi=(data)=>{
+  const url=users_url+login
+  return backendApi(url,data)
+}

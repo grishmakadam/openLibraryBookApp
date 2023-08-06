@@ -17,7 +17,7 @@ import axios from "axios";
 import MailIcon from "@mui/icons-material/Mail";
 import { AccountCircle, Visibility, VisibilityOff } from "@mui/icons-material";
 import Input from "./Input";
-import { adduserApi } from "../apicalls/apiCalls";
+import { adduserApi, loginApi } from "../apicalls/apiCalls";
 import { randomQuotegenerator } from "../utils/randomIndex";
 //   import { UserContext } from "./Context";
 
@@ -85,13 +85,13 @@ const Log_Sign = () => {
       if (m == 1) {
         return;
       }
-      // const res = await login_api(data);
-      // if (res.success) {
-      //   dispatch({ type: "login", payload: { ...res } });
-      //   navigate("/");
-      // } else {
-      //   console.log("error");
-      // }
+      const res = await loginApi(data);
+      if (res.success) {
+        // dispatch({ type: "login", payload: { ...res } });
+        navigate("/");
+      } else {
+        console.log("error");
+      }
     }
   };
 
@@ -149,6 +149,12 @@ const Log_Sign = () => {
         email: "",
         password: "",
       });
+      setValid({
+        name: true,
+        password: true,
+        confirm: true,
+        email: true,
+      })
     } else {
       if (id == "login") {
         setType("login");
