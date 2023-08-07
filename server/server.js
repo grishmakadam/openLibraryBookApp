@@ -11,7 +11,7 @@ mongoose.connect(process.env.DATABASE_URL, { useNewUrlparser: true });
 const db = mongoose.connection;
 
 db.once("open", () => console.log("connected"));
-app.use(cors())
+app.use(cors({origin:'http://localhost:3000', credentials:true}))
 app.use("/books", bookRouter);
 app.use("/users", userRouter);
 

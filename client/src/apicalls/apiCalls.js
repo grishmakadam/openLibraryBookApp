@@ -8,6 +8,9 @@ import {
   ratingsUrl,
   signup,
   updateBook,
+  login,
+  ratingsUrl,
+  signup,
   users_url,
 } from "./url";
 
@@ -21,6 +24,7 @@ const api = async (url) => {
 };
 
 const backendApi = async (url, data) => {
+  console.log("hii");
   try {
     const res = await axios.post(
       url,
@@ -31,10 +35,14 @@ const backendApi = async (url, data) => {
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
+      { withCredentials:true}
     );
+    console.log(res)
     return res.data;
-  } catch (e) {
+      } 
+   catch (e) {
+    console.log(e.message)
     return false;
   }
 };
@@ -101,3 +109,7 @@ export const updateBookApi = (id, data) => {
   const url = books_url + updateBook + id;
   return patchApis(url, data);
 };
+export const loginApi=(data)=>{
+  const url=users_url+login
+  return backendApi(url,data)
+}

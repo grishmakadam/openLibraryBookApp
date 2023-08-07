@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import Log_Sign from "./components/Log_Sign";
 import { createTheme } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
+import BasicCard from "./assets/flipcard";
 function App() {
   const theme = createTheme({
     palette: {

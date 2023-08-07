@@ -12,3 +12,5 @@ export const signup = "/addUser";
 
 export const checkBookExists = "/getBookById/";
 export const updateBook='/update_progress_status/'
+export const login="/login"
+

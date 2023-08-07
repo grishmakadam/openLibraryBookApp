@@ -24,7 +24,7 @@ import {
   MenuBook,
   SearchOutlined,
 } from "@mui/icons-material";
-import { TextField } from "@mui/material";
+import { LinearProgress, TextField } from "@mui/material";
 import Books from "./Books";
 import { Route, Routes } from "react-router-dom";
 import BookDetails from "./BookDetails";
@@ -100,7 +100,7 @@ const Drawer = styled(MuiDrawer, {
 export default function Navbar({ handleKey, changeTitle, title }) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-
+  const navigate = useNavigate();
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -136,17 +136,20 @@ export default function Navbar({ handleKey, changeTitle, title }) {
             sx={{
               backgroundColor: "#fff",
               "& label.Mui-focused": {
-                color: "primary",
+                color: "#8d8d8d",
               },
               "& .MuiOutlinedInput-root": {
                 "& fieldset": {
                   borderColor: "primary",
+                  border:"8px"
+                 
                 },
                 "&:hover fieldset": {
                   borderColor: "primary",
                 },
                 "&.Mui-focused fieldset": {
                   borderColor: "primary",
+                  
                 },
               },
             }}
@@ -198,8 +201,13 @@ export default function Navbar({ handleKey, changeTitle, title }) {
         </List>
         <Divider />
         <List>
-          {["Log Out"].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: "block" }}>
+          {[{ text: "Log Out", link: "/user/login" }].map((text, index) => (
+            <ListItem
+              key={text}
+              disablePadding
+              sx={{ display: "block" }}
+              onClick={() => navigate(text.link)}
+            >
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -216,7 +224,10 @@ export default function Navbar({ handleKey, changeTitle, title }) {
                 >
                   {index % 2 === 0 ? <Logout /> : <MailIcon />}
                 </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText
+                  primary={text.text}
+                  sx={{ opacity: open ? 1 : 0 }}
+                />
               </ListItemButton>
             </ListItem>
           ))}
