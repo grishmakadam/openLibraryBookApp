@@ -4,6 +4,7 @@ const bookSchema = mongoose.Schema({
   book_id: {
     type: String,
     required: true,
+    unique: true,
   },
   book_name: {
     type: String,
@@ -23,7 +24,10 @@ const bookSchema = mongoose.Schema({
     default: -1,
   },
   progress: {
-    type: Number
+    type: Number,
+  },
+  rating: {
+    type: Number,
   },
 });
 

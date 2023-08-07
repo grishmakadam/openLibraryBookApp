@@ -19,21 +19,35 @@ import { Select, Rating } from "@mui/material";
 import image from "../image.jpg";
 import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
 import BookShelves from "./BookShelves";
-import { addBookApi, bookDetailsApi } from "../apicalls/apiCalls";
+import {
+  addBookApi,
+  bookDetailsApi,
+  updateBookApi,
+} from "../apicalls/apiCalls";
 import { loaderActions } from "../store/loaderSlice";
 import Loader from "../assets/Loader";
 import ModelComp from "./ModalComp";
+import { checkBookExists } from "../apicalls/url";
 
 const BookDetails = () => {
   const [data, setData] = useState({
     ratings_average: 0,
     subjects: [],
-    status: null,
-    progress:null
+    status: -1,
+    progress: null,
+    rating: null,
+    present: false,
   });
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleOpen = () => {
+    console.log(data.status);
+    if (data.status != -1) {
+      setOpen(true);
+    }
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const { id } = useParams();
   const books = useSelector((state) => state.book.books);
@@ -43,8 +57,11 @@ const BookDetails = () => {
 
   const addBook = async () => {
     try {
-      console.log("add book");
-      const temp = await addBookApi({ ...data, name: "Grishma" });
+      if (data.present == false) {
+        const temp = await addBookApi({ ...data, name: "Grishma" });
+      } else {
+        const temp = await updateBookApi("grishmak@yah.co", data);
+      }
     } catch (e) {
       console.log(e);
     }
@@ -60,11 +77,24 @@ const BookDetails = () => {
         ? data.description.value
         : data.description;
       const subjects = data.subjects ? data.subjects : [];
-      setData({
+      setData((prev) => ({
+        ...prev,
         ...book[0],
+        id:book[0].id.slice(7,book[0].id.length),
         description: desc,
         subjects: [...subjects],
-      });
+      }));
+      const db_data = await checkBookExists("grishmak@yah.co", id);
+
+      if (db_data.success) {
+        setData((prev) => ({
+          ...prev,
+          status: db_data.book[0].status,
+          rating: db_data.book[0].rating,
+          progress: db_data.book[0].progress,
+          present: true,
+        }));
+      }
     } catch (e) {
       console.log(e);
     }
@@ -72,9 +102,9 @@ const BookDetails = () => {
   };
   useEffect(() => {
     getData();
-
-    console.log(books);
   }, []);
+
+  const handleSubmit = (value) => {};
 
   return loader ? (
     <Loader />
@@ -122,9 +152,10 @@ const BookDetails = () => {
                 </Button>
               )}
               //value={age}
-              onChange={(e) =>
-                setData((prev) => ({ ...prev, status: e.target.value }))
-              }
+              onChange={(e) => {
+                console.log(e.target.value);
+                setData((prev) => ({ ...prev, status: e.target.value }));
+              }}
               defaultValue={-1}
               sx={{
                 height: "45px",
@@ -167,7 +198,7 @@ const BookDetails = () => {
               },
             }}
           >
-            Add Book
+            {data.status == 0 ? "Update Progress" : "Add book"}
           </Button>
         </Grid>
       </Grid>
@@ -230,8 +261,14 @@ const BookDetails = () => {
         <Grid item>
           <BookShelves setData={setData} />
         </Grid>
-        </Grid>
-        <ModelComp open={open} handleClose={handleClose} data={data}  setData={setData}/>
+      </Grid>
+      <ModelComp
+        open={open}
+        handleClose={handleClose}
+        data={data}
+        setData={setData}
+        handleSubmit={handleSubmit}
+      />
     </Grid>
   );
 };
