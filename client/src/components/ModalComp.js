@@ -8,6 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
+
 const style = {
   position: "absolute",
   top: "50%",
@@ -23,33 +24,36 @@ const ModelComp = ({ open, handleClose, data, setData, handleSubmit }) => {
     { label: 0, value: 0 },
     { label: 100, value: 100 },
   ];
-  const [marks, setMarks] = useState(initialState);
+  const [marks, setMarks] = useState(0);
   const [value, setValue] = React.useState(0);
-  const [status, setStatus] = useState()
+  const [status, setStatus] = useState();
 
-  const onChange = (e) => {
-    setMarks((prev) => [
-      ...initialState,
-      { label: e.target.value, value: e.target.value },
-    ]);
+  const onChange = (e, newValue) => {
+    // setMarks((prev) => [
+    //   ...initialState,
+    //   { label: newValue, value: newValue },
+    // ]);
+    setMarks(newValue);
   };
 
-
   useEffect(() => {
-    setStatus(data.status)
-  },[data.status])
+    setStatus(data.status);
+    setMarks(data.progress);
+  }, [data.status]);
 
   const onSubmit = () => {
-    if (data.status == 0 && marks[1].value == 100) {
-      setStatus(1)
+    console.log(data,marks);
+    if (data.status == 0 && marks == 100) {
+      setStatus(1);
     } else if (data.status == 1) {
       setData((prev) => ({ ...prev, progress: 100, rating: value }));
     } else {
-      setData((prev) => ({ ...prev, progress: marks[1].value }));
+      setData((prev) => ({ ...prev, progress: marks }));
     }
-    // handleSubmit(marks[1].value);
+    handleSubmit();
   };
 
+  
   return (
     <Modal
       open={open}
@@ -67,11 +71,11 @@ const ModelComp = ({ open, handleClose, data, setData, handleSubmit }) => {
             <Grid item>
               <Slider
                 my={2}
-                defaultValue={0}
                 onChange={onChange}
                 aria-label="Default"
-                valueLabelDisplay="auto"
-                marks={marks}
+                valueLabelDisplay="on"
+                marks={initialState}
+                value={marks}
               />
             </Grid>
             <Grid item alignSelf="flex-end">
@@ -81,7 +85,7 @@ const ModelComp = ({ open, handleClose, data, setData, handleSubmit }) => {
                   cursor: "pointer",
                   "&:hover": { textDecoration: "underline" },
                 }}
-                onClick={()=>setStatus(1)}
+                onClick={() => setStatus(1)}
               >
                 Already Finished?
               </Typography>
@@ -102,10 +106,12 @@ const ModelComp = ({ open, handleClose, data, setData, handleSubmit }) => {
                 onChange={(e, newValue) => setValue(newValue)}
               />
             </Grid>
-
+              
             <Button sx={{ marginTop: "10px" }} onClick={onSubmit}>
-              Submit Rating
+              Submit 
             </Button>
+            
+           
           </Grid>
         )}
       </Box>

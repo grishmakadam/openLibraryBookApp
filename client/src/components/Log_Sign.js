@@ -22,11 +22,16 @@ import { randomQuotegenerator } from "../utils/randomIndex";
 //   import { UserContext } from "./Context";
 
 import FlipCard from "../assets/flipcard";
+import { useDispatch, useSelector } from "react-redux";
+import { userActions } from "../store/userSlice";
 
 const Log_Sign = () => {
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
   // const { dispatch } = useContext(UserContext);
+  const user = useSelector((state) => state.user);
+
+  const dispatch = useDispatch();
   const submitHandler = async (e) => {
     e.preventDefault();
 
@@ -63,8 +68,8 @@ const Log_Sign = () => {
       const res = await adduserApi(data);
 
       if (res.success) {
-        //   dispatch({ type: "login", payload: { ...res } });
-        console.log(res)
+        dispatch(userActions.set_user(res));
+        console.log(res);
         navigate("/");
       } else {
         console.log("error");
@@ -86,8 +91,9 @@ const Log_Sign = () => {
         return;
       }
       const res = await loginApi(data);
+      console.log(res);
       if (res.success) {
-        // dispatch({ type: "login", payload: { ...res } });
+        dispatch(userActions.set_user(res));
         navigate("/");
       } else {
         console.log("error");
@@ -132,10 +138,12 @@ const Log_Sign = () => {
   });
 
   const onChangeData = (e) => {
-    setData((prevData) => ({
-      ...prevData,
-      [e.target.name]: e.target.value,
-    }));
+    
+      setData((prevData) => ({
+        ...prevData,
+        [e.target.name]: e.target.value,
+      }));
+    
   };
   useEffect(() => {
     if (id != type) {
@@ -154,7 +162,7 @@ const Log_Sign = () => {
         password: true,
         confirm: true,
         email: true,
-      })
+      });
     } else {
       if (id == "login") {
         setType("login");
@@ -186,9 +194,8 @@ const Log_Sign = () => {
       <Grid
         item
         md={6}
-        xs={12}
+        display={{ xs: "none", md: "flex" }}
         style={{
-          display: "flex",
           alignItems: "center",
           justifyContent: "center",
           backgroundColor: "#3f8363",

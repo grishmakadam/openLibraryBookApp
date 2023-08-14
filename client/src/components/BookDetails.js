@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -22,7 +22,9 @@ import BookShelves from "./BookShelves";
 import {
   addBookApi,
   bookDetailsApi,
+  bookExists,
   updateBookApi,
+  verifyUser,
 } from "../apicalls/apiCalls";
 import { loaderActions } from "../store/loaderSlice";
 import Loader from "../assets/Loader";
@@ -38,11 +40,20 @@ const BookDetails = () => {
     rating: null,
     present: false,
   });
+
+  const user = useSelector((state) => state.user);
   const [open, setOpen] = useState(false);
-  const handleOpen = () => {
-    console.log(data.status);
-    if (data.status != -1) {
-      setOpen(true);
+  const handleOpen = async () => {
+    const res = await verifyUser();
+    if (res.success) {
+      if (data.status != -1) {
+        setOpen(true);
+      } else {
+        addBook();
+      }
+    } else {
+      
+      navigate("/user/login");
     }
   };
   const handleClose = () => {
@@ -52,15 +63,17 @@ const BookDetails = () => {
   const { id } = useParams();
   const books = useSelector((state) => state.book.books);
   const loader = useSelector((state) => state.loader.load);
-
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const addBook = async () => {
+    console.log(data);
     try {
       if (data.present == false) {
-        const temp = await addBookApi({ ...data, name: "Grishma" });
+        const temp = await addBookApi({ ...data });
       } else {
-        const temp = await updateBookApi("grishmak@yah.co", data);
+        console.log("hii");
+        const temp = await updateBookApi(id, data);
       }
     } catch (e) {
       console.log(e);
@@ -80,13 +93,16 @@ const BookDetails = () => {
       setData((prev) => ({
         ...prev,
         ...book[0],
-        id:book[0].id.slice(7,book[0].id.length),
+        id: book[0].id.slice(7, book[0].id.length),
         description: desc,
         subjects: [...subjects],
       }));
-      const db_data = await checkBookExists("grishmak@yah.co", id);
+      console.log("hello");
+
+      const db_data = await bookExists(user.email, id);
 
       if (db_data.success) {
+        console.log(db_data);
         setData((prev) => ({
           ...prev,
           status: db_data.book[0].status,
@@ -104,8 +120,7 @@ const BookDetails = () => {
     getData();
   }, []);
 
-  const handleSubmit = (value) => {};
-
+  console.log(data);
   return loader ? (
     <Loader />
   ) : (
@@ -151,9 +166,8 @@ const BookDetails = () => {
                   />
                 </Button>
               )}
-              //value={age}
+              value={data.status}
               onChange={(e) => {
-                console.log(e.target.value);
                 setData((prev) => ({ ...prev, status: e.target.value }));
               }}
               defaultValue={-1}
@@ -267,7 +281,7 @@ const BookDetails = () => {
         handleClose={handleClose}
         data={data}
         setData={setData}
-        handleSubmit={handleSubmit}
+        handleSubmit={addBook}
       />
     </Grid>
   );

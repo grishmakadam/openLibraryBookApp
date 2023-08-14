@@ -20,23 +20,21 @@ const BookContainer = () => {
   const book = useSelector((state) => state.book);
   const [title, setTitle] = useState(book.search);
   const dispatch = useDispatch();
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const changeTitle = (e) => {
     setTitle(e.target.value);
   };
   const handleKey = (e) => {
+    console.log(e.key);
     if (e.key === "Enter" || e._reactName == "onClick") {
-      console.log(e)
+      console.log(e);
       dispatch(bookActions.add_searchTerm(title));
-      navigate(`/${title}`)
+      navigate(`/${title}`);
     }
   };
   return (
-    <Container >
-     
-     
-      <Navbar changeTitle={changeTitle} handleKey={handleKey}  />
-       
+    <Container>
+      <Navbar changeTitle={changeTitle} handleKey={handleKey} title={title} />
     </Container>
   );
 };

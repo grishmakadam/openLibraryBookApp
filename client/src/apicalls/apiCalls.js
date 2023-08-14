@@ -5,14 +5,15 @@ import {
   bookShelvesUrl,
   books_url,
   checkBookExists,
-  ratingsUrl,
   signup,
   updateBook,
   login,
   ratingsUrl,
-  signup,
   users_url,
+  verifyUser_url,
+  logout,
 } from "./url";
+import { KeyboardReturnRounded } from "@mui/icons-material";
 
 const api = async (url) => {
   try {
@@ -24,32 +25,34 @@ const api = async (url) => {
 };
 
 const backendApi = async (url, data) => {
-  console.log("hii");
+  console.log(data);
   try {
-    const res = await axios.post(
-      url,
-      {
-        ...data,
+    const res = await axios({
+      url: url,
+      data: { ...data },
+      method: "POST",
+
+      headers: {
+        "Content-Type": "application/json",
       },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      },
-      { withCredentials:true}
-    );
-    console.log(res)
+
+      withCredentials: true,
+      credentials: "include",
+    });
+    console.log(res);
     return res.data;
-      } 
-   catch (e) {
-    console.log(e.message)
+  } catch (e) {
+    console.log(e.message);
     return false;
   }
 };
 
 const getApis = async (url) => {
   try {
-    const res = await axios.get(url);
+    const res = await axios.get(url, {
+      withCredentials: true,
+      credentials: "include",
+    });
     return res.data;
   } catch (ex) {
     return false;
@@ -89,19 +92,22 @@ export const bookExists = (id, bookId) => {
 
 const patchApis = async (url, data) => {
   try {
-    const res = await axios.patch(
-      url,
-      {
-        ...data,
+    const res = await axios({
+      url: url,
+      data: { ...data },
+      method: "PATCH",
+
+      headers: {
+        "Content-Type": "application/json",
       },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+
+      withCredentials: true,
+      credentials: "include",
+    });
+    console.log(res);
     return res.data;
-  } catch (ex) {
+  } catch (e) {
+    console.log(e.message);
     return false;
   }
 };
@@ -109,7 +115,17 @@ export const updateBookApi = (id, data) => {
   const url = books_url + updateBook + id;
   return patchApis(url, data);
 };
-export const loginApi=(data)=>{
-  const url=users_url+login
-  return backendApi(url,data)
-}
+export const loginApi = (data) => {
+  const url = users_url + login;
+  return backendApi(url, data);
+};
+
+export const verifyUser = () => {
+  const url = users_url + verifyUser_url;
+  return getApis(url);
+};
+
+export const logoutApi = () => {
+  const url = users_url + logout;
+  return getApis(url);
+};

@@ -1,22 +1,30 @@
 const Book = require("../models/Book");
 const User = require("../models/User");
+
 module.exports = {
   post: async (req, res) => {
-    console.log(req.body);
     try {
+      const user = req.user;
+
+      const books = (await user.populate("books")).books.filter(
+        (x) => x.book_id == req.body.id
+      );
+      if (books.length != 0) {
+        return res.json({ success: false, message: "book already exits" });
+      }
+
       const newBook = new Book({
-        book_author: req.body.author,
+        book_author: req.body.author[0],
         book_name: req.body.title,
         cover_id: req.body.cover_id,
         book_id: req.body.id,
         status: req.body.status,
       });
-      const name = req.body.name;
+      console.log("hii");
+
       const book = await newBook.save();
-      const u = await User.findOne({ name });
-      console.log(u);
-      u.books.push(book._id);
-      await u.save();
+      user.books.push(book._id);
+      await user.save();
       res.json(book);
     } catch (ex) {
       console.log(ex.message);
@@ -37,16 +45,15 @@ module.exports = {
   },
   get_book_by_id: async (req, res) => {
     try {
-      const { id } = req.params;
       const { bookId } = req.query;
 
-      const user = await User.findOne({ email: id });
+      const user = req.user;
 
       const book = (await user.populate("books")).books.filter(
         (x) => x.book_id == bookId
       );
-      if (book) {
-        return res.json({ sucess: true, book: book });
+      if (book.length != 0) {
+        return res.json({ success: true, book: book });
       } else {
         return res.json({ success: false });
       }
@@ -56,20 +63,22 @@ module.exports = {
   },
   update_progress_status: async (req, res) => {
     try {
-      const { email } = req.params;
-      const { status, progress, rating, id} = req.body;
+      const { status, progress, rating, id } = req.body;
+      console.log(req.body.status);
+      const user = req.user;
+      const temp = (await user.populate("books")).books.filter(
+        (x) => x.book_id == id
+      );
+      if (temp.length != 0) {
+        const book = await Book.findById(temp[0]._id);
+        book.status = status;
+        book.progress = progress;
+        book.rating = rating;
+        await book.save();
+        return res.json({ success: true, book: book });
+      }
 
-      const user = await User.findOne({ email: email });
-      const book = await user
-        .populate("books")
-        .books.filter((x) => x.book_id == bookId);
-
-      book.status = status;
-      book.progress = progress;
-      book.rating = rating;
-
-      await book.save();
-      return res.json({ success: true, book: book });
+      return res.json({ success: false, message: "book not in db" });
     } catch (ex) {
       return res.json({ success: false, message: ex.message });
     }
