@@ -334,3 +334,19 @@
     background: #2c6b4e;
   }
 }
+
+.img {
+  border-radius: 50%;
+  height: 110px;
+  width: 110px;
+}
+
+.tab-grid {
+  box-shadow: 1px 1px 1px 2px #d3e3db;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px !important;
+  background-color: #fff;
+  width: 20rem;
+  text-align: center;
+}

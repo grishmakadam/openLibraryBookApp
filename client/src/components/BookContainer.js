@@ -33,7 +33,15 @@ const BookContainer = () => {
     }
   };
   return (
-    <Container>
+    <Container
+      sx={{
+        backgroundColor: "#d3e3db100",
+        maxWidth: { lg: "100vw" },
+        height: "100vh",
+        p: 0,
+        m: 0,
+      }}
+    >
       <Navbar changeTitle={changeTitle} handleKey={handleKey} title={title} />
     </Container>
   );

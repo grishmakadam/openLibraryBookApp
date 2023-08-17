@@ -21,10 +21,11 @@ import MailIcon from "@mui/icons-material/Mail";
 import {
   AccountCircle,
   Logout,
+  ManageAccounts,
   MenuBook,
   SearchOutlined,
 } from "@mui/icons-material";
-import { LinearProgress, TextField } from "@mui/material";
+import { Button, Grid, LinearProgress, TextField } from "@mui/material";
 import Books from "./Books";
 import { Outlet, Route, Routes, useNavigate } from "react-router-dom";
 import BookDetails from "./BookDetails";
@@ -32,6 +33,7 @@ import Log_Sign from "./Log_Sign";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutApi } from "../apicalls/apiCalls";
 import { userActions } from "../store/userSlice";
+import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
 
 const drawerWidth = 240;
 
@@ -104,7 +106,7 @@ export default function Navbar({ handleKey, changeTitle, title }) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const user = useSelector((state) => state.user);
-  const dispatch=useDispatch()
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -114,50 +116,72 @@ export default function Navbar({ handleKey, changeTitle, title }) {
     setOpen(false);
   };
 
-  const logout =async (text) => {
-    const res = await logoutApi()
-    dispatch(userActions.remove_user())
-    navigate(text.link)
-  }
+  const logout = async (text) => {
+    const res = await logoutApi();
+    dispatch(userActions.remove_user());
+    navigate("/");
+  };
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
-        <Toolbar>
-         { user.name!="" && <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{
-              marginRight: 5,
-              ...(open && { display: "none" }),
-            }}
-          >
-            <MenuIcon />
-          </IconButton>}
+      <AppBar
+        position="fixed"
+        open={open}
+        sx={{
+          background: "white",
+          boxShadow: "none",
+          borderBottom: "1px solid #e5e5e5",
+        }}
+      >
+        <Toolbar sx={{display:"flex",justifyContent:"space-between"}}>
+          {/* {user.name != "" && ( */}
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={user.name!=""?handleDrawerOpen:undefined}
+              edge="start"
+              sx={{
+                marginRight: 5,
+                // ...(open && { display: "none" }),
+                backgroundColor: "primary.main",
+                "&:hover": {
+                  backgroundColor:"primary.main"
+                }
+              }}
+            >
+              {/* <MenuIcon /> */}
+              <LocalLibraryIcon />
+            </IconButton>
+          {/* )} */}
           {/* <Typography variant="h6" noWrap component="div">
             Mini variant drawer
           </Typography> */}
           <TextField
-            label="Search"
+            placeholder="Search"
             value={title}
+            size="small"
+            fullWidth
             onChange={changeTitle}
             sx={{
+             
               backgroundColor: "#fff",
+              borderRadius: "10px",
+
               "& label.Mui-focused": {
                 color: "#8d8d8d",
               },
               "& .MuiOutlinedInput-root": {
                 "& fieldset": {
                   borderColor: "primary",
-                  border: "8px",
+                  border: "1px solid primary",
                 },
                 "&:hover fieldset": {
                   borderColor: "primary",
                 },
                 "&.Mui-focused fieldset": {
-                  borderColor: "primary",
+                  border: "2px solid #3f8363",
+
+                  boxShadow: "0px 0px  2px #75bd9d",
                 },
               },
             }}
@@ -170,9 +194,19 @@ export default function Navbar({ handleKey, changeTitle, title }) {
               ),
             }}
           />
+          {user.name == "" && (
+            <Grid container justifyContent="flex-end" spacing={2}>
+              <Grid item>
+                <Button variant="contained" onClick={()=>navigate("/user/signup")}>Sign up</Button>
+              </Grid>
+              <Grid item>
+                <Button variant="outlined" onClick={()=>navigate("/user/login")}>Log in</Button>
+              </Grid>
+            </Grid>
+          )}
         </Toolbar>
       </AppBar>
-      {user.name!="" && (
+      {user.name != "" && (
         <Drawer variant="permanent" open={open}>
           <DrawerHeader>
             <IconButton onClick={handleDrawerClose}>
@@ -200,8 +234,10 @@ export default function Navbar({ handleKey, changeTitle, title }) {
                       mr: open ? 3 : "auto",
                       justifyContent: "center",
                     }}
+                    onClick={()=>navigate("/profile")}
                   >
-                    {index % 2 === 0 ? <AccountCircle /> : <MenuBook />}
+                    
+                    {index % 2 === 0 ? <ManageAccounts /> : <MenuBook />}
                   </ListItemIcon>
                   <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
                 </ListItemButton>
@@ -243,7 +279,7 @@ export default function Navbar({ handleKey, changeTitle, title }) {
           </List>
         </Drawer>
       )}
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box component="main" sx={{  width:"100%" }}>
         <Outlet />
       </Box>
     </Box>

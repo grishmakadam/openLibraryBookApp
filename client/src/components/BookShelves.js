@@ -2,21 +2,10 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { bookShelvesUrlApi, ratingsUrlApi } from "../apicalls/apiCalls";
 import { useParams } from "react-router-dom";
-import { Grid, Rating, Typography } from "@mui/material";
-import { LinearProgress ,linearProgressClasses } from "@mui/material";
-import { styled } from '@mui/material/styles';
-const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
-  height: 10,
-  borderRadius: 5,
-  [`&.${linearProgressClasses.colorPrimary}`]: {
-    backgroundColor:
-      theme.palette.grey[theme.palette.mode === "light" ? 200 : 800],
-  },
-  [`& .${linearProgressClasses.bar}`]: {
-    borderRadius: 5,
-    backgroundColor: theme.palette.mode === "light" ? "#1a90ff" : "#308fe8",
-  },
-}));
+import { Grid, Typography } from "@mui/material";
+import { LinearProgress } from "@mui/material";
+import ProgressBar from "./ProgressBar";
+
 const BookShelves = ({ setData }) => {
   const { id } = useParams();
   const [shelves, setShelves] = useState({ 1: "", 2: "", 3: "", 4: "", 5: "" });
@@ -39,58 +28,9 @@ const BookShelves = ({ setData }) => {
         <Typography variant="h5">Community Reviews</Typography>
       </Grid>
       <Grid item container flexDirection="column">
-        <Grid item display="flex" width="200px" justifyContent="space-between">
-          <Typography variant="body1">1 star</Typography>
-          <Rating
-            value={shelves["1"]}
-            precision={0.5}
-            max={5}
-            name="read-only"
-            readOnly
-          />
-        </Grid>
-
-        <Grid item display="flex" width="200px" justifyContent="space-between">
-          <Typography variant="body1">2 stars</Typography>
-          <Rating
-            value={shelves["2"]}
-            precision={0.5}
-            max={5}
-            name="read-only"
-            readOnly
-          />
-        </Grid>
-        <Grid item display="flex" width="200px" justifyContent="space-between">
-          <Typography variant="body1">3 stars</Typography>
-          <Rating
-            value={shelves["3"]}
-            precision={0.5}
-            max={5}
-            name="read-only"
-            readOnly
-          />
-        </Grid>
-        <Grid item display="flex" width="200px" justifyContent="space-between">
-          <Typography variant="body1">4 stars</Typography>
-          <Rating
-            value={shelves["4"]}
-            precision={0.5}
-            max={5}
-            name="read-only"
-            readOnly
-          />
-        </Grid>
-        <Grid  item display="flex" width="200px" justifyContent="space-between">
-          <Typography variant="body1">5 stars</Typography>
-          {/* <Rating
-            value={shelves["5"]}
-            precision={0.5}
-            max={5}
-            name="read-only"
-            readOnly
-          /> */}
-           <LinearProgress color="primary" variant="determinate" value={80}  style={{ width: "100px"}}/>
-        </Grid>
+        {Object.keys(shelves).map((x) => (
+          <ProgressBar key={x} value={shelves[x]} rate={x} />
+        ))}
       </Grid>
     </Grid>
   );

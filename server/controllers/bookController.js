@@ -64,7 +64,7 @@ module.exports = {
   update_progress_status: async (req, res) => {
     try {
       const { status, progress, rating, id } = req.body;
-      console.log(req.body.status);
+      console.log(req.body.progress);
       const user = req.user;
       const temp = (await user.populate("books")).books.filter(
         (x) => x.book_id == id

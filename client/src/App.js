@@ -8,7 +8,8 @@ import { ThemeProvider } from "@emotion/react";
 import { Suspense, lazy } from "react";
 // import BookDetails from "./components/BookDetails";
 // import Books from "./components/Books";
-import BookContainer from "./components/BookContainer"
+import BookContainer from "./components/BookContainer";
+import ProfilePage from "./components/ProfilePage";
 const Log_Sign = lazy(() => import("./components/Log_Sign"));
 // const BookContainer = lazy(() => import("../src/components/BookContainer"));
 const BookDetails = lazy(() => import("./components/BookDetails"));
@@ -35,13 +36,7 @@ function App() {
       </BrowserRouter> */}
 
       <Routes>
-        <Route
-          path="/"
-          element={
-              <BookContainer />
-            
-          }
-        >
+        <Route path="/" element={<BookContainer />}>
           <Route
             path="/:id"
             element={
@@ -58,6 +53,7 @@ function App() {
               </Suspense>
             }
           />
+          <Route path="/profile" element={<ProfilePage />} />
         </Route>
         <Route
           path="/user/:id"
