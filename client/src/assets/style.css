@@ -335,10 +335,11 @@
   }
 }
 
+
 .img {
-  border-radius: 50%;
-  height: 110px;
-  width: 110px;
+  
+  height: 130px !important;
+  width: 130px !important;
 }
 
 .tab-grid {

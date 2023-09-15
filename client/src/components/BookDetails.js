@@ -52,7 +52,6 @@ const BookDetails = () => {
         addBook();
       }
     } else {
-      
       navigate("/user/login");
     }
   };
@@ -69,12 +68,13 @@ const BookDetails = () => {
   const addBook = async () => {
     console.log(data);
     try {
-      if (data.present == false) {
-        const temp = await addBookApi({ ...data });
-      } else {
-        console.log("hii");
-        const temp = await updateBookApi(id, data);
-      }
+      // if (data.present == false) {
+      //   const temp = await addBookApi({ ...data });
+      // } else {
+      //   console.log("hii");
+      //   const temp = await updateBookApi(id, data);
+      // }
+      const temp = await addBookApi({ ...data });
     } catch (e) {
       console.log(e);
     }
@@ -115,6 +115,7 @@ const BookDetails = () => {
       console.log(e);
     }
     dispatch(loaderActions.remove_loader());
+    console.log(data);
   };
   useEffect(() => {
     getData();

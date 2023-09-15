@@ -6,16 +6,18 @@ import { combineReducers } from "redux";
 import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
 import { userReducer } from "./userSlice";
+import { snackbarReducer } from "./snackbarSlice";
 
 const persistConfig = {
   key: "root",
   storage,
-  blacklist: ["loader"],
+  blacklist: ["loader","snackbar"],
 };
 const rootReducer = combineReducers({
   book: bookReducer,
   loader: loaderReducer,
   user: userReducer,
+  snackbar:snackbarReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

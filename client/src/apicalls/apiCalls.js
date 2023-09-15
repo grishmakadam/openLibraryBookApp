@@ -12,8 +12,11 @@ import {
   users_url,
   verifyUser_url,
   logout,
+  updateDetails,
+  updateImage,
+  changePassword,
+
 } from "./url";
-import { KeyboardReturnRounded } from "@mui/icons-material";
 
 const api = async (url) => {
   try {
@@ -107,14 +110,13 @@ const patchApis = async (url, data) => {
     console.log(res);
     return res.data;
   } catch (e) {
-    console.log(e.message);
-    return false;
+    return e.response.data;
   }
 };
-export const updateBookApi = (id, data) => {
-  const url = books_url + updateBook + id;
-  return patchApis(url, data);
-};
+// export const updateBookApi = (id, data) => {
+//   const url = books_url + updateBook + id;
+//   return patchApis(url, data);
+// };
 export const loginApi = (data) => {
   const url = users_url + login;
   return backendApi(url, data);
@@ -129,3 +131,19 @@ export const logoutApi = () => {
   const url = users_url + logout;
   return getApis(url);
 };
+
+export const updateDetailsApi = (data) => {
+  const url = users_url + updateDetails
+  return patchApis(url,data)
+}
+
+export const updateImageApi = (data) => {
+  const url = users_url + updateImage
+  return patchApis(url,data)
+}
+
+export const changePasswordApi = (data) => {
+  const url = users_url + changePassword
+  return patchApis(url,data)
+}
+

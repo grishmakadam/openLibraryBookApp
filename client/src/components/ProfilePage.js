@@ -1,10 +1,15 @@
-import React from "react";
-import logo from "../assets/book.jpg";
-import { Box, Button, Grid, Typography } from "@mui/material";
+import React, { useState } from "react";
+import { Grid, Tab, Tabs, Typography } from "@mui/material";
 import { AccountCircle, LockReset } from "@mui/icons-material";
+import Profile from "./Profile";
+import UserDetails from "./UserDetails";
+import PasswordUpdate from "./PasswordUpdate";
+
 const ProfilePage = () => {
+  const [open, setOpen] = useState(false);
+
   return (
-    <Grid container sx={{ mt: "3rem", p: 4, mx: 0 }}>
+    <Grid container sx={{ mt: "2rem", p: 4, mx: 0 }}>
       {/* <Grid
         item
         container
@@ -60,45 +65,67 @@ const ProfilePage = () => {
       <Grid item xs={12} py={2}>
         <Typography>Account Settings</Typography>
       </Grid>
-      <Grid
-        item
-        container
-        xs={3}
-        flexDirection="column"
-        sx={{ py: 2, boxShadow: "1px 1px  4px #e2e2e2",borderRadius:"10px" }}
-      >
+      <Grid item xs={3}>
         <Grid
-          item
-                  p={2}
-                  pl={4}
-          alignItems="center"
-          display="flex"
+          container
+          flexDirection="column"
           sx={{
-            "&:hover": {
-                  backgroundColor: "#CEE6DB",
-                  borderRight:"2px solid #3f8363"
-            },
+            py: 2,
+            boxShadow: "1px 1px  4px #e2e2e2",
+            borderRadius: "10px",
+            display: { xs: "none", md: "flex" },
           }}
         >
-          <AccountCircle />
-          <Typography sx={{ ml: 2 }}>Personal Details</Typography>
+          <Grid
+            item
+            p={2}
+            pl={4}
+            alignItems="center"
+            display="flex"
+            sx={{
+              backgroundColor: !open ? "#CEE6DB" : "",
+              borderRight: !open ? "3px solid #3f8363" : "",
+              cursor: "pointer",
+            }}
+            onClick={() => setOpen(false)}
+          >
+            <AccountCircle />
+            <Typography sx={{ ml: 2 }}>Personal Details</Typography>
+          </Grid>
+          <Grid
+            item
+            p={2}
+            pl={4}
+            alignItems="center"
+            display="flex"
+            sx={{
+              backgroundColor: open ? "#CEE6DB" : "",
+              borderRight: open ? "3px solid #3f8363" : "",
+              cursor: "pointer",
+            }}
+            onClick={() => setOpen(true)}
+          >
+            <LockReset />
+            <Typography sx={{ ml: 2 }}>Password</Typography>
+          </Grid>
         </Grid>
-        <Grid
-          item
-                  p={2}
-                  pl={4}
-          alignItems="center"
-          display="flex"
-          sx={{
-            "&:hover": {
-                  backgroundColor: "#CEE6DB",
-                borderRight:"2px solid #3f8363"
-            },
-          }}
+      </Grid>
+      <Grid item sx={{ display: { xs: "flex",md:"none",lg:"none" } }}>
+        <Tabs
+          value={open}
+          onChange={() => setOpen(false)}
+          textColor="secondary"
+          indicatorColor="secondary"
+          aria-label="secondary tabs example"
         >
-          <LockReset />
-          <Typography sx={{ml:2}}>Password</Typography>
-        </Grid>
+          <Tab value="one" label="Item One" />
+          <Tab value="two" label="Item Two" />
+      
+        </Tabs>
+      </Grid>
+      <Grid item xs={9}>
+        {!open && <Profile />}
+        {open && <PasswordUpdate />}
       </Grid>
     </Grid>
   );

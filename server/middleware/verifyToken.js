@@ -20,12 +20,12 @@ module.exports.verifyToken = async (req, res, next) => {
 
     const user = await User.findOne({ email: id });
     req.user = user;
-
+console.log("CHECKED")
     next();
   } catch (e) {
     console.log(e.message);
     // res.clearCookie("token");
-    res.status(401).json({ error: "Request is not authorized" });
+    res.status(401).json({ success:false,message: "Request is not authorized" });
   }
 };
 

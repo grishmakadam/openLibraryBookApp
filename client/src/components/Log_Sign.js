@@ -66,13 +66,10 @@ const Log_Sign = () => {
       }
 
       const res = await adduserApi(data);
-
       if (res.success) {
         dispatch(userActions.set_user(res));
-        console.log(res);
         navigate("/");
       } else {
-        console.log("error");
       }
     } else {
       //await login(data)
@@ -91,8 +88,9 @@ const Log_Sign = () => {
         return;
       }
       const res = await loginApi(data);
-      console.log(res);
       if (res.success) {
+        console.log("res");
+
         dispatch(userActions.set_user(res));
         navigate("/");
       } else {
@@ -138,12 +136,10 @@ const Log_Sign = () => {
   });
 
   const onChangeData = (e) => {
-    
-      setData((prevData) => ({
-        ...prevData,
-        [e.target.name]: e.target.value,
-      }));
-    
+    setData((prevData) => ({
+      ...prevData,
+      [e.target.name]: e.target.value,
+    }));
   };
   useEffect(() => {
     if (id != type) {
@@ -180,7 +176,6 @@ const Log_Sign = () => {
         // setLoading(signloading)
       }
     }
-    console.log(error);
   }, [id]);
   return (
     <Grid

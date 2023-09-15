@@ -118,8 +118,9 @@ export default function Navbar({ handleKey, changeTitle, title }) {
 
   const logout = async (text) => {
     const res = await logoutApi();
+    console.log(res)
     dispatch(userActions.remove_user());
-    navigate("/");
+    navigate("/"+text);
   };
   return (
     <Box sx={{ display: "flex" }}>
@@ -194,7 +195,7 @@ export default function Navbar({ handleKey, changeTitle, title }) {
               ),
             }}
           />
-          {user.name == "" && (
+          {user.email == "" && (
             <Grid container justifyContent="flex-end" spacing={2}>
               <Grid item>
                 <Button variant="contained" onClick={()=>navigate("/user/signup")}>Sign up</Button>
@@ -206,7 +207,7 @@ export default function Navbar({ handleKey, changeTitle, title }) {
           )}
         </Toolbar>
       </AppBar>
-      {user.name != "" && (
+      {user.email != "" && (
         <Drawer variant="permanent" open={open}>
           <DrawerHeader>
             <IconButton onClick={handleDrawerClose}>

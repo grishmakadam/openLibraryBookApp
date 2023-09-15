@@ -10,6 +10,8 @@ import { Suspense, lazy } from "react";
 // import Books from "./components/Books";
 import BookContainer from "./components/BookContainer";
 import ProfilePage from "./components/ProfilePage";
+import Alerts from "./components/Alerts";
+
 const Log_Sign = lazy(() => import("./components/Log_Sign"));
 // const BookContainer = lazy(() => import("../src/components/BookContainer"));
 const BookDetails = lazy(() => import("./components/BookDetails"));
@@ -64,6 +66,7 @@ function App() {
           }
         />
       </Routes>
+      <Alerts/>
     </ThemeProvider>
   );
 }

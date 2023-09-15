@@ -16,6 +16,7 @@ import BookDetails from "./BookDetails";
 import Log_Sign from "./Log_Sign";
 import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 
+
 const BookContainer = () => {
   const book = useSelector((state) => state.book);
   const [title, setTitle] = useState(book.search);
@@ -43,6 +44,7 @@ const BookContainer = () => {
       }}
     >
       <Navbar changeTitle={changeTitle} handleKey={handleKey} title={title} />
+    
     </Container>
   );
 };

@@ -5,12 +5,16 @@ module.exports = {
   post: async (req, res) => {
     try {
       const user = req.user;
-
       const books = (await user.populate("books")).books.filter(
         (x) => x.book_id == req.body.id
       );
       if (books.length != 0) {
-        return res.json({ success: false, message: "book already exits" });
+        const book = await Book.findById(books[0]._id);
+        book.status = req.body.status;
+        book.progress = req.body.progress;
+        book.rating = req.body.rating;
+        await book.save();
+        return res.json({ success: true, book: book });
       }
 
       const newBook = new Book({
@@ -20,7 +24,6 @@ module.exports = {
         book_id: req.body.id,
         status: req.body.status,
       });
-      console.log("hii");
 
       const book = await newBook.save();
       user.books.push(book._id);

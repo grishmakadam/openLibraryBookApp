@@ -1,4 +1,5 @@
 import {
+  Grid,
     IconButton,
     InputAdornment,
     InputLabel,
@@ -8,10 +9,10 @@ import {
   
   const Input = (props) => {
     return (
-      <>
+      <Grid item>
         <InputLabel
           htmlFor={props.name}
-          style={{
+          sx={{
             marginBottom: "5px",
             fontSize: "14px",
             color: "#4C566A",
@@ -21,14 +22,14 @@ import {
         </InputLabel>
         <TextField
           variant="outlined"
-          style={{ height: "64px",width:"300px" }}
+          sx={{ height: "64px",width:{lg:"300px"} }}
           fullWidth
           size="small"
           InputLabelProps={{shrink: false}}
           {...props}
           label={false}
         />
-      </>
+      </Grid>
     );
   };
   
