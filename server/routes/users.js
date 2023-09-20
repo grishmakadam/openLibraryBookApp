@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+
 const userController = require("../controllers/userController");
 const { verifyToken } = require("../middleware/verifyToken");
 router.post("/addUser", userController.signup);
@@ -14,5 +15,7 @@ router.get("/verifyUser", verifyToken, async (req, res) => {
 router.patch("/updateDetails", verifyToken, userController.updateDetails);
 router.patch("/savePhoto", verifyToken, userController.saveImage);
 router.get("/getUserDetails", verifyToken, userController.getDetails)
-router.patch("/changePassword",verifyToken,userController.changePassword)
+router.patch("/changePassword", verifyToken, userController.changePassword)
+router.post("/otpverify",userController.otpVerify)
+
 module.exports = router;

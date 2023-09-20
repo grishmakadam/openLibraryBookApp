@@ -1,4 +1,32 @@
 const User = require("../models/User");
+const nodemailer = require("nodemailer");
+const speakeasy = require("speakeasy");
+
+let mailer = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.AUTH_EMAIL,
+    pass: process.env.AUTH_PASSWORD,
+  },
+});
+
+function sendOtp(email, otp) {
+  const mailOptions = {
+    from: process.env.AUTH_EMAIL,
+    to: email,
+    Subject: "OTP for app",
+    html: `<p>Here is the OTP for your app ${otp}</p>`,
+  };
+  mailer.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log("error", error);
+      return res.json("hello");
+    } else {
+      console.log("sent success");
+    }
+  });
+}
+
 const { createToken } = require("../middleware/createToken");
 const bcrypt = require("bcrypt");
 module.exports = {
@@ -31,7 +59,13 @@ module.exports = {
 
     try {
       const user = await User.login(email, password);
+      const otp = speakeasy.totp({
+        secret: user.otpSecret,
+        encoding: "base32",
+      });
+      sendOtp(user.email, otp);
       const token = await createToken(email);
+
       res.cookie("token", token, {
         expires: new Date(Date.now() + 900000000),
         httpOnly: true,
@@ -133,6 +167,28 @@ module.exports = {
       });
     } catch (ex) {
       res.status(400).json({ success: false, message: ex.message });
+    }
+  },
+  otpVerify: async (req, res) => {
+    try {
+      const { email, otp } = req.body;
+      const user = await User.find({ email: email });
+      console.log(user)
+      otp.
+      const verified = speakeasy.totp.verify({
+        secret: user.otpSecret,
+        encoding: "base32",
+        token: otp,
+        window: 6,
+      });
+      if (verified) {
+        res.json("verified");
+      } else {
+        console.log(verified);
+        res.json("not verified");
+      }
+    } catch (ex) {
+      console.log(ex.message);
     }
   },
 };

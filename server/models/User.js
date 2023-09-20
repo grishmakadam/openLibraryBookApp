@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcrypt");
-
+const speakeasy=require("speakeasy")
 const userSchema = new mongoose.Schema({
   fname: {
     type: String,
@@ -30,6 +30,9 @@ const userSchema = new mongoose.Schema({
   },
   image: {
     type: String,
+  },
+  otpSecret: {
+    type:String
   },
   books: [
     {
@@ -64,6 +67,9 @@ userSchema.statics.signup = async function (name, email, password) {
     arr = name.split(" ");
   }
 
+  const otpSecret=speakeasy.generateSecret({length:20}).base32
+
+
   const user = await this.create({
     fname: arr[0],
     lname: arr[1],
@@ -71,6 +77,7 @@ userSchema.statics.signup = async function (name, email, password) {
     email,
     password: hash,
     image: "",
+    otpSecret:otpSecret
   });
   return user;
 };
